@@ -31,3 +31,20 @@ def validate_task_data(title, description, priority, status, due_date):
     
     if status and status not in valid_status:
       return "Status must be Pending, In Progress, or Done"
+    
+
+def validate_partial_task_data(title, description, priority, status, due_date):
+    if all(v is None for v in [title, description, priority, status, due_date]):
+        return "At least one field is required"
+
+    if title is not None and not title:
+        return "Title cannot be empty"
+
+    if due_date is not None and not due_date:
+        return "Due date cannot be empty"
+
+    if priority is not None and priority not in ["High", "Medium", "Low"]:
+        return "Priority must be High, Medium, or Low"
+
+    if status is not None and status not in ["Pending", "In Progress", "Done"]:
+        return "Status must be Pending, In Progress, or Done"

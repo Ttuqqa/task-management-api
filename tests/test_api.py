@@ -10,13 +10,13 @@ def test_register(client):
 def test_login(client):
     client.post("/register", json={"username": "login_user", "password": "123456"})
     response = client.post("/login", json={"username": "login_user", "password": "123456"})
-    assert response.status_code == 201
+    assert response.status_code == 200
     
 def test_create_task(client):
     token = get_token(client, "task_user")
     headers = {"Authorization": f"Bearer {token}"}
     response = client.post("/tasks", json={"title": "Test task", "due_date": "2026-12-01"}, headers=headers)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.get_json()["data"]["task_id"] is not None
 
 

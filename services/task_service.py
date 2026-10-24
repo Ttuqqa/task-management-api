@@ -78,6 +78,9 @@ def get_one_task(task_id):
 def update_task(task_id, title, description, priority, status, due_date):
     user_id = g.user['user_id']
 
+    priority = priority if priority else 'Medium'
+    status = status if status else 'Pending'
+
     affected = db_update_task(
         title,
         description,

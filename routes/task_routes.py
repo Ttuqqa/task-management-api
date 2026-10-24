@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from services.task_service import create_task, delete_task, get_all_tasks, get_one_task,update_task,partial_update_task
-from utils.validation import validate_task_data
+from utils.validation import validate_task_data, validate_partial_task_data
 from utils.response import error_response
 from utils.auth import token_required
 
@@ -67,6 +67,16 @@ def getone_task(task_id):
 @token_required
 def update_task_route(task_id):
     data = request.get_json()
+    error = validate_task_data(
+        data.get("title"),
+        data.get("description"),
+        data.get("priority"),
+        data.get("status"),
+        data.get("due_date")
+    )
+
+    if error:
+        return error_response(error, status_code=400)
 
     return update_task(
     task_id,
@@ -83,6 +93,17 @@ def update_task_route(task_id):
 @token_required
 def partialupdate_route(task_id):
   data = request.get_json()
+  
+  error = validate_partial_task_data(
+        data.get("title"),
+        data.get("description"),
+        data.get("priority"),
+        data.get("status"),
+        data.get("due_date")
+    )
+
+  if error:
+      return error_response(error, status_code=400)
 
   return partial_update_task(
     task_id,
